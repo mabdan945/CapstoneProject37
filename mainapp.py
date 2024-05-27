@@ -5,7 +5,7 @@ import tensorflow as tf
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-  model=tf.keras.models.load_model('/Capstone37/casting.hdf5')
+  model=tf.keras.models.load_model('/CapstoneProject37/casting.hdf5')
   return model
 with st.spinner('Model is being loaded..'):
   model=load_model()
