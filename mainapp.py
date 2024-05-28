@@ -6,7 +6,7 @@ import numpy as np
 from util import classify, set_background
 
 
-#set_background('./bgs/bg5.png')
+set_background('./bgrd/bg.jpg')
 
 # set title
 st.title('Casting Quality Control')
