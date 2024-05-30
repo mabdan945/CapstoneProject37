@@ -42,23 +42,20 @@ def classify(image, model, class_names):
     Returns:
         A tuple of the predicted class name and the confidence score for that prediction.
     """
-    # convert image to (300, 300)
-    image = ImageOps.fit(image, (300, 300), Image.Resampling.LANCZOS)
+    # Resize the image to match the input shape expected by the model
+    image = image.resize((300, 300))
 
-    # convert image to numpy array
-    image_array = np.asarray(image)
+    # Convert image to numpy array and normalize
+    image_array = np.array(image) / 255.0
 
-    # normalize image
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
+    # Expand dimensions to match the input shape expected by the model
+    image_array = np.expand_dims(image_array, axis=0)
 
-    # set model input
-    data = np.ndarray(shape=(1, 300, 300, 3), dtype=np.float32)
-    data[0] = normalized_image_array
+    # Make prediction
+    prediction = model.predict(image_array)
 
-    # make prediction
-    prediction = model.predict(data)
-    # index = np.argmax(prediction)
-    index = 0 if prediction[0][0] > 0.95 else 1
+    # Determine the predicted class and confidence score
+    index = np.argmax(prediction)
     class_name = class_names[index]
     confidence_score = prediction[0][index]
 
