@@ -1,9 +1,8 @@
 import base64
-
 import streamlit as st
 from PIL import ImageOps, Image
 import numpy as np
-
+import tensorflow as tf
 
 def set_background(image_file):
     """
@@ -28,7 +27,6 @@ def set_background(image_file):
     """
     st.markdown(style, unsafe_allow_html=True)
 
-
 def classify(image, model, class_names):
     """
     This function takes an image, a model, and a list of class names and returns the predicted class and confidence
@@ -42,6 +40,10 @@ def classify(image, model, class_names):
     Returns:
         A tuple of the predicted class name and the confidence score for that prediction.
     """
+    # Ensure image is in RGB mode
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+
     # Resize the image to match the input shape expected by the model
     image = image.resize((300, 300))
 
@@ -60,3 +62,18 @@ def classify(image, model, class_names):
     confidence_score = prediction[0][index]
 
     return class_name, confidence_score
+
+# Example usage with Streamlit (assuming 'model' and 'class_names' are defined)
+st.title("Image Classification")
+
+# Upload image
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Uploaded Image.', use_column_width=True)
+    st.write("")
+    st.write("Classifying...")
+
+    class_name, confidence_score = classify(image, model, class_names)
+    st.write(f"Predicted class: {class_name}")
+    st.write(f"Confidence score: {confidence_score:.2f}")
