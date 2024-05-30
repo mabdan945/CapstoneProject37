@@ -1,2 +1,2 @@
-ok
-defect
+0 normal
+1 defect
