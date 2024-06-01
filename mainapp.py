@@ -23,7 +23,7 @@ st.header('Please upload a Casting Product Image')
 model = load_model('./modelcast.h5')
 
 # load class names
-with open('./model/label.txt', 'r') as f:
+with open('./model/labels.txt', 'r') as f:
     class_names = [a[:-1].split(' ')[1] for a in f.readlines()]
     f.close()
 
